@@ -1,6 +1,7 @@
-#include <windows.h>
 #include <io.h>
 #include <fcntl.h>
+#include <ctype.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -21,15 +22,16 @@ int main(int argc, char const *argv[]) {
 		return 0;
 	}
 	// Open the input and output files.
-	errno_t ErrorCode;
 	FILE *InputFile = NULL, *OutputFile = NULL;
-	if (ErrorCode = fopen_s(&InputFile, InputFilename, "rtS")) {
+	InputFile = fopen(InputFilename, "rt");
+	if (!InputFile) {
 		perror("Failed to open the input file");
-		return ErrorCode;
+		return errno;
 	}
-	if (ErrorCode = fopen_s(&OutputFile, OutputFilename, "wbS")) {
+	OutputFile = fopen(OutputFilename, "wb");
+	if (!OutputFile) {
 		perror("Failed to create the output file");
-		return ErrorCode;
+		return errno;
 	}
 	// Convert the text file to a binary one.
 	unsigned int BytesWritten = 0;
