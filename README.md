@@ -1,7 +1,7 @@
 # hex2binfile
 Command-line hex text to binary file converter
 
-Usage: `hex2binfile -i \<input filename\> -o \<output filename\>`  
+Usage: `hex2binfile -i <input filename> -o <output filename>`  
 The input (text) file is case-insensitive, any non-hex characters are skipped.  
 The output file is a binary file generated from the text file.  
 
