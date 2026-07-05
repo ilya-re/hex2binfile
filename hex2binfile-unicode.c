@@ -18,8 +18,8 @@ int wmain(int argc, wchar_t const *argv[]) {
 	if (!(InputFilename && OutputFilename)) {
 		puts("Convert a text file containing hex data to a binary file\n"
 			 "The input file is case-insensitive, any non-hex characters are skipped\n"
-			 "-i <filename>  input file\n"
-			 "-o <filename> output file\n"
+			 "-i <filename>      input file\n"
+			 "-o <filename>      output file\n"
 			 "--print-num-bytes  print number of bytes written\n");
 		return 0;
 	}
