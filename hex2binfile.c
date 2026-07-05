@@ -1,4 +1,5 @@
-#include <io.h>
+#include <string.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -9,16 +10,19 @@
 int main(int argc, char const *argv[]) {
 	// Parse command line arguments.
 	char const *InputFilename = NULL, *OutputFilename = NULL;
+	bool PrintNumBytes = false;
 	for (int i = 0; i < argc; i++) {
 		if (!strcmp(argv[i], "-i") && strlen(argv[i + 1])) {InputFilename  = argv[i + 1];}
 		if (!strcmp(argv[i], "-o") && strlen(argv[i + 1])) {OutputFilename = argv[i + 1];}
+		if (!strcmp(argv[i], "--print-num-bytes")) {PrintNumBytes = true;}
 	}
 	// If no filenames provided, print help and exit.
 	if (!(InputFilename && OutputFilename)) {
 		puts("Convert a text file containing hex data to a binary file\n"
 			 "The input file is case-insensitive, any non-hex characters are skipped\n"
-			 "-i <filename>  input file\n"
-			 "-o <filename> output file\n");
+			 "-i <filename>      input file\n"
+			 "-o <filename>      output file\n"
+			 "--print-num-bytes  print number of bytes written\n");
 		return 0;
 	}
 	// Open the input and output files.
@@ -34,7 +38,7 @@ int main(int argc, char const *argv[]) {
 		return errno;
 	}
 	// Convert the text file to a binary one.
-	unsigned int BytesWritten = 0;
+	size_t BytesWritten = 0;
 	bool IsFirstDigit = true;
 	char ConvertBuf[3] = {0, 0, 0};
 	for (int InputChar = fgetc(InputFile); InputChar != EOF; InputChar = fgetc(InputFile)) {
@@ -50,6 +54,6 @@ int main(int argc, char const *argv[]) {
 	}
 	fclose(InputFile);
 	fclose(OutputFile);
-	printf("%u bytes written\n", BytesWritten);
+	if (PrintNumBytes) {printf("%zu bytes written\n", BytesWritten);}
 	return 0;
 }
